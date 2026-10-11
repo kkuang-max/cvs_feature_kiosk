@@ -116,10 +116,10 @@ const header = (title='', back='Back') => `<header class="hdr"><div class="row">
 
 // The scanner sits below the screen: a product, its barcode, and the red scan line pointing down to it
 const scannerArt = (target) => `<div class="scanner">
-  <div class="item">${SCANS[target].img ? img(SCANS[target].img,280,245) : `<div class="item-label"><small>CVS Label</small><b>${SCANS[target].title}</b></div>`}
-    <div class="code">${img(IC.barcode,64,64)}<span>${SCANS[target].meta.split(' · ')[0]}</span></div></div>
-  <div class="beam"></div>
-  <div class="window"><i></i></div>
+  <div class="item">
+    <div class="scan-frame">${img(A+'icons/scan-bracket.svg',300,245,'bracket')}${img(A+'scan-howto.svg',260,205,'howto')}</div>
+    <div class="code">${img(IC.barcode,40,40)}<span>${SCANS[target].meta.split(' · ')[0]}</span></div>
+  </div>
   <p class="below">${DOWN_SVG}<span>Scanner is below the screen</span></p>
 </div>`;
 
@@ -146,8 +146,8 @@ SCREENS.scan2 = { cls:'warm prompt', static:true, render:() => `
   <div class="copy">
     <p class="eyebrow">Compare your options</p>
     <h2>Scan the product you want to compare.</h2>
-    <p class="chip-cmp">${img(IC.productIcon,32,33)}Comparing with <b>CeraVe Moisturizing Cream</b></p>
   </div>
+  <p class="chip-cmp">Comparing with <b>CeraVe Moisturizing Cream</b></p>
   ${scannerArt('cetaphil')}
   <p class="demo">Prototype: tap anywhere to simulate a scan</p>
 `};
@@ -265,8 +265,7 @@ const exploreTab = () => {
 };
 
 SCREENS.doc = { render:({doc}) => `${header()}
-  <div class="doc"><h1>${doc}</h1><div><p class="t">CeraVe Moisturizing Cream for Normal to Dry Skin, 16 OZ</p><p class="m">1.17 lbs. item #418620</p></div>${DOCS[doc]}
-    <div class="doc-switch">${Object.keys(DOCS).map(d=>`<button class="${d===doc?'on':''}" data-act="swapdoc" data-doc="${d}">${d}</button>`).join('')}</div></div>`};
+  <div class="doc"><h1>${doc}</h1><div><p class="t">CeraVe Moisturizing Cream for Normal to Dry Skin, 16 OZ</p><p class="m">1.17 lbs. item #418620</p></div>${DOCS[doc]}</div>`};
 
 /* ================= "Still there?" sheet (Overlay / Bottom sheet) ================= */
 const scrim = document.getElementById('scrim'), sheet = document.getElementById('sheet');
@@ -314,7 +313,6 @@ stackEl.addEventListener('click', e => {
       tb.classList.toggle('right', S.tab === 'explore');
       break; }
     case 'doc': push('doc', {doc:b.dataset.doc}); break;
-    case 'swapdoc': push('doc', {doc:b.dataset.doc}, {replace:1}); break;
     case 'compare':
       S.compared = true;
       if (!S.rows.includes('cvs')){ S.rows.push('cvs'); S.newRow = 'cvs'; refresh(); toast('Showing pharmacist-selected alternatives'); }

@@ -32,7 +32,7 @@ p,h1,h2,h3,h4{margin:0}
 .scr::-webkit-scrollbar{display:none}
 .scr.from-right{transform:translateX(100%)}
 .scr.behind{transform:translateX(-28%);filter:brightness(.9)}
-@media(prefers-reduced-motion:reduce){.scr,.sheet,.scrim{transition:none!important}.vf-sheen::after,.scanner .item,.beam,.window i,.below svg{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.scr,.sheet,.scrim{transition:none!important}.vf-sheen::after,.scanner .item,.scan-frame .howto,.below svg{animation:none!important}}
 
 /* Kiosk/Header: Back (label) ... Start over */
 .hdr{height:112px;margin-top:24px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff}
@@ -56,30 +56,24 @@ p,h1,h2,h3,h4{margin:0}
 .eyebrow{font-size:22px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--action-primary)}
 .copy h2{font-size:64px;font-weight:800;line-height:72px;letter-spacing:-1.8px;color:var(--text-primary)}
 .lede{width:860px;font-size:26px;line-height:38px;color:var(--text-secondary)}
-.steps3{position:absolute;left:64px;top:500px;display:flex;gap:20px}
+.steps3{position:absolute;left:64px;top:544px;display:flex;gap:20px}
 .steps3 div{width:285px;padding:22px 24px;border-radius:20px;background:rgba(255,255,255,.7);border:1px solid #fff}
 .steps3 b{display:flex;align-items:center;gap:12px;font-size:24px;line-height:30px}
 .steps3 b i{width:36px;height:36px;border-radius:999px;background:var(--action-primary);color:#fff;font-style:normal;font-size:18px;display:grid;place-items:center}
 .steps3 span{display:block;margin-top:8px;font-size:20px;line-height:28px;color:var(--text-secondary)}
-.chip-cmp{align-self:flex-start;display:flex;align-items:center;gap:14px;padding:14px 28px 14px 20px;border-radius:999px;background:#fff;border:1px solid var(--border-selected);font-size:24px;color:var(--text-secondary)}
-.chip-cmp img{width:32px;height:33px}
+.chip-cmp{position:absolute;left:50%;top:697px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;padding:14px 28px 14px 20px;white-space:nowrap;border-radius:999px;background:#fff;border:1px solid var(--border-selected);font-size:24px;color:var(--text-secondary)}
 .chip-cmp b{font-weight:600;color:var(--text-primary)}
-/* product held over the scanner; the red light points down to the scanner below the screen */
-.scanner{position:absolute;left:0;right:0;top:700px;display:flex;flex-direction:column;align-items:center}
+/* scan card: your bracket frame with the how-to illustration (product held up to the camera under the kiosk) */
+.scanner{position:absolute;left:0;right:0;top:806px;display:flex;flex-direction:column;align-items:center}
 .scanner .item{padding:36px 40px;border-radius:32px;background:#fff;box-shadow:0 24px 60px rgba(0,0,0,.14);display:flex;flex-direction:column;align-items:center;gap:20px;animation:hover 3s ease-in-out infinite}
 @keyframes hover{50%{transform:translateY(-10px)}}
-.scanner .item>img{width:280px;height:245px;object-fit:contain}
-.item-label{width:300px;height:245px;border-radius:20px;background:var(--action-surface);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:0 28px}
-.item-label small{font-size:20px;color:var(--text-secondary)}
-.item-label b{font-size:34px;line-height:40px;color:var(--action-deep)}
+.scan-frame{position:relative;width:300px;height:245px}
+.scan-frame .bracket{position:absolute;inset:0}
+.scan-frame .howto{position:absolute;left:20px;top:20px;width:260px;height:205px;animation:lift 2.4s ease-in-out infinite}
+@keyframes lift{50%{transform:translateY(-6px)}}
 .scanner .code{display:flex;align-items:center;gap:12px;padding:8px 18px;border-radius:12px;background:var(--gray-50);font-size:18px;font-weight:600;color:var(--text-secondary)}
 .scanner .code img{width:40px;height:40px}
-.beam{margin-top:4px;width:320px;height:100px;background:linear-gradient(180deg,rgba(204,0,0,0),rgba(204,0,0,.32));clip-path:polygon(0 0,100% 0,82% 100%,18% 100%);animation:beam 1.6s ease-in-out infinite}
-@keyframes beam{50%{opacity:.45}}
-.window{position:relative;width:320px;height:36px;border-radius:999px;background:#1a1a19;box-shadow:0 6px 18px rgba(0,0,0,.2);overflow:hidden}
-.window i{position:absolute;left:24px;right:24px;top:15px;height:6px;border-radius:999px;background:#ff3b3b;box-shadow:0 0 16px #ff3b3b,0 0 32px rgba(255,59,59,.6);animation:laser 1.6s ease-in-out infinite}
-@keyframes laser{50%{opacity:.55;transform:scaleX(.92)}}
-.below{margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:24px;font-weight:600;color:var(--action-primary)}
+.below{margin-top:50px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:24px;font-weight:600;color:var(--action-primary)}
 .below svg{width:40px;height:40px;animation:nudge 1.6s ease-in-out infinite}
 @keyframes nudge{50%{transform:translateY(8px)}}
 .demo{position:absolute;right:40px;top:80px;font-size:16px;color:var(--text-tertiary)}
@@ -206,9 +200,6 @@ p,h1,h2,h3,h4{margin:0}
 .doc .t{font-size:36px;font-weight:700;line-height:44px;color:var(--text-primary)}
 .doc .m{margin-top:6px;font-size:22px;line-height:28px;font-weight:400;color:var(--text-secondary)}
 .doc b{display:inline-block;font-size:26px;font-weight:700;margin-bottom:8px}
-.doc-switch{display:flex;gap:12px}
-.doc-switch button{padding:14px 26px;border-radius:999px;border:1px solid var(--border-divider);background:#fff;font-size:22px;line-height:28px}
-.doc-switch button.on{background:var(--action-primary);border-color:var(--action-primary);color:#fff;font-weight:600}
 
 /* ---------- 08 "Still there?" (Overlay / Bottom sheet) ---------- */
 .scrim{position:absolute;inset:0;z-index:90;background:rgba(0,0,0,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .3s;pointer-events:none}
