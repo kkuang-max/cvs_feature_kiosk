@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CVS Scan & Explain — Kiosk
 
-## Getting Started
+The Scan & Explain flow from the phone prototype ([cvsfeatureaixd.vercel.app](https://cvsfeatureaixd.vercel.app/)), redesigned for a 1920×1080 in-store touchscreen.
 
-First, run the development server:
+The kiosk is one self-contained page in `public/` (`kiosk.html`, `kiosk.css`, `kiosk.js`, and the `scan-explain/` assets). The Next.js app at `/` shows it full-screen in an iframe, the same setup as the phone prototype.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000, or go to `/kiosk.html` to load the page directly.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Flow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Attract screen**: tap the shimmering *Tap to scan a product* button.
+2. **Camera**: tap the shutter for a flash, then the scanning sheen with four progress steps, then the product page.
+3. **Product**: *Description* (overview, used for, ingredients, directions, warnings) and *Explore Options* (Complete Your Routine, Compare your options, ratings).
+4. **List +** / **Add to a list**: a bottom sheet with an on-screen keyboard to name the list. Then the *Added to…* sheet, then *View list*.
+5. **Scan Another Product**: scans Cetaphil and adds it to the comparison table. **Compare Similar** adds CVS Health Cream.
+6. **List**: quantity, remove, check items into *In basket*, collapse the basket, *Remove all*. A side panel shows aisles, an estimated total and a take-home code.
 
-## Learn More
+## Microinteractions (kept from the phone build)
 
-To learn more about Next.js, take a look at the following resources:
+- Pages slide in from the right (`.36s cubic-bezier(.3,.7,.2,1)`), and the previous page shifts left and dims.
+- The camera flashes, then the scanning view swaps in place without a slide.
+- The viewfinder corners breathe, the scan step bar fills step by step, and the progress card rises in.
+- The tab thumb slides between Description and Explore Options.
+- The bottom sheet slides up (`.42s cubic-bezier(.22,.9,.25,1)`) over a blurred scrim. You can drag the grabber down to dismiss it, and the name field shakes if you submit it empty.
+- "Have it" pops when an item is added. A new comparison row is highlighted and scrolled into view. A toast confirms each action.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Kiosk-only additions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Type and touch targets are about 1.5× the phone sizes. The fixed 1920×1080 stage scales to fit any display.
+- An on-screen keyboard and name suggestions for list names. A physical keyboard also works.
+- **Start over** on every screen. After 90 s with no touch, a *Still there?* sheet appears, and the kiosk resets 15 s later.
+- *Find it in store* (aisles and total) and *Take this list with you* on the list page. The QR code is decorative only.
