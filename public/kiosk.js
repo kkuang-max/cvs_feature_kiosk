@@ -10,6 +10,9 @@ const IC = {
 const img = (src, w, h, cls='') => `<img src="${src}" width="${w}" height="${h}" alt="" class="${cls}">`;
 const RESTART_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>';
 const PIN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+const HEART_SVG = '<svg viewBox="0 0 24 22"><path d="M12 21.5 10.3 20C4.2 14.5.2 10.9.2 6.4.2 2.8 3 0 6.6 0c2 0 4 .9 5.4 2.4C13.4.9 15.4 0 17.4 0c3.6 0 6.4 2.8 6.4 6.4 0 4.5-4 8.1-10.1 13.6L12 21.5z" fill="#CC0000"/></svg>';
+const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const BARCODE_GREEN = '<svg viewBox="0 0 20 20" fill="none" stroke="#1E7A6F" stroke-width="1.5" stroke-linecap="round"><path d="M3.3 4.2v11.6M5.8 4.2v11.6M8.3 4.2v11.6M10.8 4.2v11.6M14.2 4.2v11.6M16.7 4.2v11.6"/></svg>';
 const DOWN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M5 12l7 7 7-7"/></svg>';
 
 const IDLE_MS = 60000;       // no touches for this long → "Still there?"
@@ -103,7 +106,7 @@ function refresh(entry = top()){
 
 /* ================= toast ================= */
 const toastEl = document.getElementById('toast'); let tt;
-function toast(msg){ toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(tt); tt = setTimeout(()=>toastEl.classList.remove('on'), 1800); }
+function toast(msg){ toastEl.innerHTML = CHECK_SVG + '<span></span>'; toastEl.lastChild.textContent = msg; toastEl.classList.add('on'); clearTimeout(tt); tt = setTimeout(()=>toastEl.classList.remove('on'), 1800); }
 
 /* ================= screens ================= */
 const restartBtn = `<button class="restart" data-act="restart">${RESTART_SVG}Start over</button>`;
@@ -113,7 +116,7 @@ const header = (title='', back='Back') => `<header class="hdr"><div class="row">
 
 // The scanner sits below the screen: a product, its barcode, and the red scan line pointing down to it
 const scannerArt = (target) => `<div class="scanner">
-  <div class="item">${SCANS[target].img ? img(SCANS[target].img,300,262) : `<div class="item-label"><small>CVS Label</small><b>${SCANS[target].title}</b></div>`}
+  <div class="item">${SCANS[target].img ? img(SCANS[target].img,280,245) : `<div class="item-label"><small>CVS Label</small><b>${SCANS[target].title}</b></div>`}
     <div class="code">${img(IC.barcode,64,64)}<span>${SCANS[target].meta.split(' · ')[0]}</span></div></div>
   <div class="beam"></div>
   <div class="window"><i></i></div>
@@ -121,25 +124,24 @@ const scannerArt = (target) => `<div class="scanner">
 </div>`;
 
 // Idle screen. Bringing any product to the scanner starts the lookup.
-SCREENS.home = { cls:'attract', static:true, render:() => `
-  ${img(IC.bgPattern1,1209,1110,'hpat p1')}${img(IC.bgPattern2,1209,1110,'hpat p2')}
-  <div class="brand"><span class="heart">♥</span>CVS<small>pharmacy</small></div>
+SCREENS.home = { cls:'warm attract', static:true, render:() => `
+  <div class="brand">${HEART_SVG}CVS<small>pharmacy</small></div>
+  <p class="demo">Prototype: tap anywhere to simulate a scan</p>
   <div class="copy">
     <p class="eyebrow">Scan &amp; Explain</p>
     <h2>Not sure what something is for? Scan it here.</h2>
     <p class="lede">Hold the product’s barcode under the scanner below this screen. We’ll explain what it does, how to use it, and what else completes your routine.</p>
-    <div class="steps3">
-      <div><b><i>1</i>Scan</b><span>Hold the barcode under the red light</span></div>
-      <div><b><i>2</i>Understand</b><span>Plain-language overview, directions &amp; warnings</span></div>
-      <div><b><i>3</i>Compare</b><span>See alternatives and where to find them</span></div>
-    </div>
+  </div>
+  <div class="steps3">
+    <div><b><i>1</i>Scan</b><span>Hold the barcode under the red light</span></div>
+    <div><b><i>2</i>Understand</b><span>Overview, directions &amp; warnings</span></div>
+    <div><b><i>3</i>Compare</b><span>Alternatives and where to find them</span></div>
   </div>
   ${scannerArt('cerave')}
-  <p class="demo">Prototype: tap anywhere to simulate a scan</p>
 `};
 
 // Compare: scan a second product at the same scanner
-SCREENS.scan2 = { cls:'attract prompt', static:true, render:() => `
+SCREENS.scan2 = { cls:'warm prompt', static:true, render:() => `
   ${header('', 'Back')}
   <div class="copy">
     <p class="eyebrow">Compare your options</p>
@@ -151,12 +153,12 @@ SCREENS.scan2 = { cls:'attract prompt', static:true, render:() => `
 `};
 
 // "Looking up": the barcode was read; the same 4-step progress as the phone, with the AI sheen over the product
-SCREENS.scanning = { cls:'lookup', static:true, render:({target}) => `
+SCREENS.scanning = { cls:'warm lookup', static:true, render:({target}) => `
   <header class="hdr"><div class="row"><button class="backbtn" data-act="back" aria-label="Cancel">${img(IC.back,12,21)}Cancel</button><div class="end">${restartBtn}</div></div></header>
   <div class="found">
     <div class="found-card">
       <div class="pic">${SCANS[target].img ? img(SCANS[target].img,280,245) : img(IC.productIcon,120,124)}<div class="vf-sheen"></div></div>
-      <p class="ok">${img(IC.barcode,28,28)}Barcode read</p>
+      <p class="ok">${BARCODE_GREEN}Barcode read</p>
       <b>${SCANS[target].title}</b><span>${SCANS[target].meta}</span>
     </div>
     <div class="side">
@@ -224,9 +226,9 @@ SCREENS.product = { cls:'prod', render:() => `
 
 const descTab = () => `
   <div class="col">
-    <div class="block"><div class="acc h"><span>Overview</span></div>
-      <div class="card desc-card"><h4>What is this?</h4><p>A rich, non-greasy moisturizer with three essential ceramides and hyaluronic acid. It restores the skin’s protective barrier and keeps skin hydrated for 24 hours.</p></div>
-      <div class="card usedfor"><h4>Used for</h4><div class="tags">
+    <div class="block"><div class="shead"><span>Overview</span></div>
+      <div class="desc-card"><h4>What is this?</h4><p>A rich, non-greasy moisturizer with three essential ceramides and hyaluronic acid. It restores the skin’s protective barrier and keeps skin hydrated for 24 hours.</p></div>
+      <div class="usedfor"><h4>Used for</h4><div class="tags">
         <span class="tag"><span class="ti">${img(IC.tagDry,20,29)}</span>Dry Skin</span><span class="tag"><span class="ti">${img(IC.tagEczema,29,29)}</span>Eczema-prone skin</span>
         <span class="tag"><span class="ti">${img(IC.tagRough,26,32)}</span>Rough, cracked skin</span></div></div>
     </div>
@@ -240,9 +242,9 @@ const descTab = () => `
 const exploreTab = () => {
   const rows = S.compared ? [...S.rows, 'cerave'] : [];
   return `
-  <div class="col"><div class="block">
-    <div class="acc h"><span>Complete Your Routine</span><span class="cnt">Pairs well with this cream</span></div>
-    <div class="routine">${ROUTINE.map(r => `<div class="ritem"><span class="st"><i></i></span>
+  <div class="col"><div class="block routine-block">
+    <div class="shead"><span>Complete Your Routine</span><span class="cnt">Pairs well with this cream</span></div>
+    <div class="routine">${ROUTINE.map(r => `<div class="ritem"><span class="st"></span>
       <span class="tx"><b>${r.t}</b><small>${r.s}</small></span>
       <span class="where ${r.clinic?'clinic':''}">${r.clinic?'':PIN_SVG}${r.where}</span></div>`).join('')}</div>
   </div></div>
@@ -262,8 +264,8 @@ const exploreTab = () => {
   </div>`;
 };
 
-SCREENS.doc = { render:({doc}) => `${header(doc)}
-  <div class="doc"><div><p class="t">CeraVe Moisturizing Cream for Normal to Dry Skin, 16 OZ</p><p class="m">1.17 lbs. item #418620</p></div>${DOCS[doc]}
+SCREENS.doc = { render:({doc}) => `${header()}
+  <div class="doc"><h1>${doc}</h1><div><p class="t">CeraVe Moisturizing Cream for Normal to Dry Skin, 16 OZ</p><p class="m">1.17 lbs. item #418620</p></div>${DOCS[doc]}
     <div class="doc-switch">${Object.keys(DOCS).map(d=>`<button class="${d===doc?'on':''}" data-act="swapdoc" data-doc="${d}">${d}</button>`).join('')}</div></div>`};
 
 /* ================= "Still there?" sheet (Overlay / Bottom sheet) ================= */
@@ -347,10 +349,10 @@ function armIdle(){
 addEventListener('pointerdown', armIdle, {passive:true});
 addEventListener('keydown', armIdle);
 
-/* ================= fit 1920×1080 stage to the display ================= */
+/* ================= fit the 1024×1366 iPad Pro 12.9" stage to the display ================= */
 let scale = 1;
 function layout(){
-  scale = Math.min(innerWidth/1920, innerHeight/1080);
+  scale = Math.min(innerWidth/1024, innerHeight/1366);
   document.documentElement.style.setProperty('--scale', scale);
 }
 addEventListener('resize', layout); layout();

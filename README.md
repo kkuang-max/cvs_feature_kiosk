@@ -1,6 +1,6 @@
 # CVS Scan & Explain — Kiosk
 
-The Scan & Explain flow from the phone prototype ([cvsfeatureaixd.vercel.app](https://cvsfeatureaixd.vercel.app/)), redesigned for a 1920×1080 in-store touchscreen.
+The Scan & Explain flow from the phone prototype ([cvsfeatureaixd.vercel.app](https://cvsfeatureaixd.vercel.app/)), redesigned for an in-store kiosk. The layout matches the **Kiosk** page in Figma: iPad Pro 12.9" portrait (1024×1366), scaled to fit any display.
 
 The kiosk is one self-contained page in `public/` (`kiosk.html`, `kiosk.css`, `kiosk.js`, and the `scan-explain/` assets). The Next.js app at `/` shows it full-screen in an iframe, the same setup as the phone prototype.
 
