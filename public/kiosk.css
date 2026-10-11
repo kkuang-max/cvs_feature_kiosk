@@ -32,7 +32,7 @@ p,h1,h2,h3,h4{margin:0}
 .scr::-webkit-scrollbar{display:none}
 .scr.from-right{transform:translateX(100%)}
 .scr.behind{transform:translateX(-28%);filter:brightness(.9)}
-@media(prefers-reduced-motion:reduce){.scr,.sheet,.scrim{transition:none!important}.vf-sheen::after,.scanner .item,.feed *,.below svg{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.scr,.sheet,.scrim{transition:none!important}.vf-sheen::after,.feed *,.below svg{animation:none!important}}
 
 /* Kiosk/Header: Back (label) ... Start over */
 .hdr{height:112px;margin-top:24px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff}
@@ -65,8 +65,7 @@ p,h1,h2,h3,h4{margin:0}
 .chip-cmp b{font-weight:600;color:var(--text-primary)}
 /* scan card: your bracket frame with the how-to illustration (product held up to the camera under the kiosk) */
 .scanner{position:absolute;left:0;right:0;top:806px;display:flex;flex-direction:column;align-items:center}
-.scanner .item{padding:36px 40px;border-radius:32px;background:#fff;box-shadow:0 24px 60px rgba(0,0,0,.14);display:flex;flex-direction:column;align-items:center;gap:20px;animation:hover 3s ease-in-out infinite}
-@keyframes hover{50%{transform:translateY(-10px)}}
+.scanner .item{padding:36px 40px;border-radius:32px;background:#fff;box-shadow:0 24px 60px rgba(0,0,0,.14);display:flex;flex-direction:column;align-items:center;gap:20px}
 .scan-frame{position:relative;width:300px;height:245px}
 .scan-frame .bracket{position:absolute;inset:0}
 .feed{position:absolute;left:8px;top:8px;width:284px;height:229px;border-radius:10px;overflow:hidden;background:#111}
