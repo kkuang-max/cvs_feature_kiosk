@@ -19,7 +19,7 @@ The kiosk has a built-in barcode scanner below the screen. Customers bring any p
 2. **Looking it up**: the barcode is read and the product appears with the AI sheen, then four timed progress steps.
 3. **Product**: *Description* (overview, used for, ingredients, directions, warnings) and *Explore Options* (Complete Your Routine with aisle locations, Compare your options, ratings).
 4. **Scan Another Product**: the customer scans a second item (Cetaphil), and it's added to the comparison table. **Compare Similar** adds CVS Health Cream.
-5. **Start over** is on every screen. After 60 s with no touch, a *Still there?* sheet appears, and the kiosk resets 15 s later.
+5. **Start over** is on every screen. After 60 s with no touch, a *Still there?* sheet appears, and the kiosk resets 15 s later. To demo it faster, add `?idle=5` to the URL.
 
 In the prototype, a tap stands in for the scanner. A real USB or Bluetooth scanner also works: it types the digits and then Enter.
 

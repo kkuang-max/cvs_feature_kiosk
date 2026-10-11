@@ -15,7 +15,7 @@ const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-wid
 const BARCODE_GREEN = '<svg viewBox="0 0 20 20" fill="none" stroke="#1E7A6F" stroke-width="1.5" stroke-linecap="round"><path d="M3.3 4.2v11.6M5.8 4.2v11.6M8.3 4.2v11.6M10.8 4.2v11.6M14.2 4.2v11.6M16.7 4.2v11.6"/></svg>';
 const DOWN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M5 12l7 7 7-7"/></svg>';
 
-const IDLE_MS = 60000;       // no touches for this long → "Still there?"
+const IDLE_MS = (Number(new URLSearchParams(location.search).get("idle")) || 60) * 1000;   // no touches for this long → "Still there?" (?idle=5 to demo)
 const IDLE_COUNTDOWN = 15;   // then this many seconds before the kiosk resets for the next customer
 
 /* ================= data (same content as the phone prototype) ================= */
@@ -81,6 +81,7 @@ function push(name, args, {replace=0, anim=true}={}){
   const removed = replace ? stack.splice(stack.length - replace, replace) : [];
   stack.push(entry);
   setTimeout(() => removed.forEach(r => r.el.remove()), 380);
+  armIdle();   // a scan can open the product page without another touch, so restart the idle timer here too
 }
 function pop(n=1){
   if (stack.length <= 1) return;
@@ -284,8 +285,8 @@ function sheetIdle(){
   idleOpen = true;
   sheet.innerHTML = `<div class="head"><i></i><h3 id="sheetTitle">Still there?</h3></div><div class="idle"><div class="ring" id="idleN">${left}</div>
     <p>This screen will reset for the next customer.</p>
-    <button class="cta view" data-act="stillhere">I’m still here</button>
-    <button class="cta again" data-act="restart">Start over</button></div>`;
+    <button class="btn-fill" data-act="stillhere">I’m still here</button>
+    <button class="btn-outline" data-act="restart">Start over</button></div>`;
   scrim.classList.add('on'); sheet.classList.add('on');
   clearInterval(idleTick);
   idleTick = setInterval(() => {
