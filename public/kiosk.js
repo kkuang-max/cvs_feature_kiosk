@@ -21,8 +21,8 @@ const IDLE_COUNTDOWN = 15;   // then this many seconds before the kiosk resets f
 /* ================= data (same content as the phone prototype) ================= */
 // What the kiosk's barcode scanner reads. Scanners type the code like a keyboard, then Enter.
 const SCANS = {
-  cerave:{title:'CeraVe Moisturizing Cream', meta:'UPC 3606000537521 · 16 oz', img:A+'cerave-cream.png'},
-  cetaphil:{title:'Cetaphil Moisturizing Cream', meta:'UPC 3499320013161 · 16 oz'},
+  cerave:{title:'CeraVe Moisturizing Cream', meta:'UPC 3606000537446 · 16 oz', img:A+'cerave-cream.png', feed:A+'camera-feed.jpg', box:[108,85,72,51]},
+  cetaphil:{title:'Cetaphil Moisturizing Cream', meta:'UPC 3302993918161 · 16 oz', feed:A+'camera-feed-cetaphil.jpg', box:[113,96,78,58]},
 };
 // Not personalized: the kiosk doesn't know what the customer already owns, so each item shows where to find it
 const ROUTINE = [
@@ -115,9 +115,17 @@ const header = (title='', back='Back') => `<header class="hdr"><div class="row">
   <div class="end">${restartBtn}</div></div></header>`;
 
 // The scanner sits below the screen: a product, its barcode, and the red scan line pointing down to it
+// What the camera under the kiosk sees: the customer's product, with the barcode found and being read
+const liveFeed = (target) => { const [x,y,w,h] = SCANS[target].box; return `<div class="feed">
+  <img class="shot" src="${SCANS[target].feed}" alt="Camera view of a ${SCANS[target].title} barcode held up to the kiosk">
+  <i class="vignette"></i>
+  <div class="detect" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><i class="sweep"></i></div>
+  <span class="live"><i></i>LIVE</span>
+  <span class="camlabel">KIOSK CAM · <b data-clock>11:41:08</b></span>
+</div>`; };
 const scannerArt = (target) => `<div class="scanner">
   <div class="item">
-    <div class="scan-frame">${img(A+'icons/scan-bracket.svg',300,245,'bracket')}${img(A+'scan-howto.svg',260,205,'howto')}</div>
+    <div class="scan-frame">${liveFeed(target)}${img(A+'icons/scan-bracket.svg',300,245,'bracket')}</div>
     <div class="code">${img(IC.barcode,40,40)}<span>${SCANS[target].meta.split(' · ')[0]}</span></div>
   </div>
   <p class="below">${DOWN_SVG}<span>Scanner is below the screen</span></p>
@@ -336,6 +344,12 @@ addEventListener('keydown', e => {
     typed = '';
   }
 });
+
+// live clock on the camera feed
+setInterval(() => {
+  const t = new Date().toLocaleTimeString('en-US', {hour12:false});
+  document.querySelectorAll('[data-clock]').forEach(n => n.textContent = t);
+}, 1000);
 
 /* ================= idle reset ================= */
 let idleTimer;

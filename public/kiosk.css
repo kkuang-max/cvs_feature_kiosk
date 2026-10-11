@@ -32,7 +32,7 @@ p,h1,h2,h3,h4{margin:0}
 .scr::-webkit-scrollbar{display:none}
 .scr.from-right{transform:translateX(100%)}
 .scr.behind{transform:translateX(-28%);filter:brightness(.9)}
-@media(prefers-reduced-motion:reduce){.scr,.sheet,.scrim{transition:none!important}.vf-sheen::after,.scanner .item,.scan-frame .howto,.below svg{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.scr,.sheet,.scrim{transition:none!important}.vf-sheen::after,.scanner .item,.feed *,.below svg{animation:none!important}}
 
 /* Kiosk/Header: Back (label) ... Start over */
 .hdr{height:112px;margin-top:24px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff}
@@ -69,8 +69,24 @@ p,h1,h2,h3,h4{margin:0}
 @keyframes hover{50%{transform:translateY(-10px)}}
 .scan-frame{position:relative;width:300px;height:245px}
 .scan-frame .bracket{position:absolute;inset:0}
-.scan-frame .howto{position:absolute;left:20px;top:20px;width:260px;height:205px;animation:lift 2.4s ease-in-out infinite}
-@keyframes lift{50%{transform:translateY(-6px)}}
+.feed{position:absolute;left:8px;top:8px;width:284px;height:229px;border-radius:10px;overflow:hidden;background:#111}
+/* slight drift, like a product held in someone's hand */
+.feed .shot{position:absolute;inset:-4px;width:292px;height:237px;object-fit:cover;animation:drift 5s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0) rotate(0)}30%{transform:translate(1.5px,-1px) rotate(.25deg)}65%{transform:translate(-1px,1.5px) rotate(-.2deg)}}
+.feed .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.35))}
+/* barcode found: green corners that settle in, a red line sweeping across it */
+.detect{position:absolute;border-radius:6px;background:rgba(52,211,153,.12);
+  background-image:linear-gradient(#34d399,#34d399),linear-gradient(#34d399,#34d399),linear-gradient(#34d399,#34d399),linear-gradient(#34d399,#34d399),linear-gradient(#34d399,#34d399),linear-gradient(#34d399,#34d399),linear-gradient(#34d399,#34d399),linear-gradient(#34d399,#34d399);
+  background-repeat:no-repeat;background-size:13px 3px,3px 13px,13px 3px,3px 13px,13px 3px,3px 13px,13px 3px,3px 13px;
+  background-position:0 0,0 0,100% 0,100% 0,0 100%,0 100%,100% 100%,100% 100%;animation:lock 2.4s ease-in-out infinite}
+@keyframes lock{0%{transform:scale(1.18);opacity:.4}25%,100%{transform:scale(1);opacity:1}}
+.detect .sweep{position:absolute;left:-6px;right:-6px;top:50%;height:2px;border-radius:1px;background:#ff3b3b;box-shadow:0 0 6px #ff3b3b,0 0 12px rgba(255,59,59,.6);animation:sweep 1.4s ease-in-out infinite}
+@keyframes sweep{0%,100%{top:10%}50%{top:88%}}
+.feed .live{position:absolute;left:10px;top:10px;display:flex;align-items:center;gap:5px;padding:3px 8px 3px 7px;border-radius:999px;background:rgba(0,0,0,.55);font-size:10px;font-weight:700;color:#fff;letter-spacing:.3px}
+.feed .live i{width:7px;height:7px;border-radius:999px;background:#ff3b3b;animation:blink 1.2s steps(1) infinite}
+@keyframes blink{50%{opacity:.2}}
+.feed .camlabel{position:absolute;right:10px;bottom:9px;font-size:9px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:.2px}
+.feed .camlabel b{font-weight:600;font-variant-numeric:tabular-nums}
 .scanner .code{display:flex;align-items:center;gap:12px;padding:8px 18px;border-radius:12px;background:var(--gray-50);font-size:18px;font-weight:600;color:var(--text-secondary)}
 .scanner .code img{width:40px;height:40px}
 .below{margin-top:50px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:24px;font-weight:600;color:var(--action-primary)}
