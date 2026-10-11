@@ -133,6 +133,7 @@ const scannerArt = (target) => `<div class="scanner">
 
 // Idle screen. Bringing any product to the scanner starts the lookup.
 SCREENS.home = { cls:'warm attract', static:true, render:() => `
+  ${img(A+'kiosk-bg-1.svg',1023,941,'bgpat p1')}${img(A+'kiosk-bg-2.svg',1023,941,'bgpat p2')}
   <div class="brand">${HEART_SVG}CVS<small>pharmacy</small></div>
   <p class="demo">Prototype: tap anywhere to simulate a scan</p>
   <div class="copy">

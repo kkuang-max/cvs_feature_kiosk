@@ -48,6 +48,9 @@ p,h1,h2,h3,h4{margin:0}
 
 /* ---------- 01 Idle / 06 Scan to compare ---------- */
 .warm{background:var(--warm-bg);overflow:hidden}
+.bgpat{position:absolute;left:1px;width:1023px;height:941px;pointer-events:none}
+.bgpat.p1{top:-173px}
+.bgpat.p2{top:356px}
 .brand{position:absolute;left:64px;top:64px;display:flex;align-items:center;gap:12px;font-size:44px;font-weight:800;letter-spacing:-1px;color:var(--brand-red)}
 .brand svg{width:44px;height:40px}
 .brand small{font-size:24px;font-weight:500;letter-spacing:0}
